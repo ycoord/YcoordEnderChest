@@ -1,0 +1,239 @@
+max-slots: 52
+messages:
+  no-money:
+    - Нет денег или предыдущий слот закрыт!
+  slot-buy-success:
+    - "Вы успешно приобрели слот %buy-slot% на странице %buy-page% за %buy-price%"
+  slot-description:
+    - "<слот>"
+  page-description:
+    - "<страница>"
+  get-command-description:
+    - "получить предмет игрока"
+  set-command-description:
+    - "установить предмет для игрока"
+  item-set:
+    - "Вы установили предмет в слот %slot% на странице %page% для игрока %player%"
+  ec-no-item:
+    - "У игрока %player% в слоте %slot% на странице %page% нет предмета!"
+  ec-item-got:
+    - "Вам был выдан предмет игрока %player% в слоте %slot% на странице %page%"
+placeholders:
+  0:
+    placeholder: "%slot_price_0_9%"
+    result:  "100"
+  1:
+    placeholder: "%slot_price_0_10%"
+    result:  "100"
+  2:
+    placeholder: "%slot_price_0_11%"
+    result:  "200"
+  3:
+    placeholder: "%slot_price_0_12%"
+    result:  "300"
+  4:
+    placeholder: "%slot_price_0_13%"
+    result:  "400"
+  5:
+    placeholder: "%slot_price_0_14%"
+    result:  "500"
+  6:
+    placeholder: "%slot_price_0_15%"
+    result:  "600"
+  7:
+    placeholder: "%slot_price_0_16%"
+    result:  "700"
+  8:
+    placeholder: "%slot_price_0_17%"
+    result:  "700"
+  9:
+    placeholder: "%slot_price_0_18%"
+    result:  "700"
+  10:
+    placeholder: "%slot_price_0_19%"
+    result:  "700"
+  11:
+    placeholder: "%slot_price_0_20%"
+    result:  "700"
+  12:
+    placeholder: "%slot_price_0_21%"
+    result:  "700"
+  13:
+    placeholder: "%slot_price_0_22%"
+    result:  "700"
+  14:
+    placeholder: "%slot_price_0_23%"
+    result:  "700"
+  15:
+    placeholder: "%slot_price_0_24%"
+    result:  "700"
+  16:
+    placeholder: "%slot_price_0_25%"
+    result:  "700"
+  17:
+    placeholder: "%slot_price_0_26%"
+    result:  "700"
+  18:
+    placeholder: "%slot_price_0_27%"
+    result:  "700"
+  19:
+    placeholder: "%slot_price_0_28%"
+    result:  "700"
+  20:
+    placeholder: "%slot_price_0_29%"
+    result:  "700"
+  21:
+    placeholder: "%slot_price_0_30%"
+    result:  "700"
+  22:
+    placeholder: "%slot_price_0_31%"
+    result:  "700"
+  23:
+    placeholder: "%slot_price_0_32%"
+    result:  "700"
+  24:
+    placeholder: "%slot_price_0_33%"
+    result:  "700"
+  25:
+    placeholder: "%slot_price_0_34%"
+    result:  "700"
+  26:
+    placeholder: "%slot_price_0_35%"
+    result:  "700"
+  27:
+    placeholder: "%slot_price_0_36%"
+    result:  "700"
+  28:
+    placeholder: "%slot_price_0_37%"
+    result:  "700"
+  29:
+    placeholder: "%slot_price_0_38%"
+    result:  "700"
+  30:
+    placeholder: "%slot_price_0_39%"
+    result:  "700"
+  31:
+    placeholder: "%slot_price_0_40%"
+    result:  "700"
+  32:
+    placeholder: "%slot_price_0_41%"
+    result:  "700"
+  33:
+    placeholder: "%slot_price_0_42%"
+    result:  "700"
+  34:
+    placeholder: "%slot_price_0_43%"
+    result:  "700"
+  35:
+    placeholder: "%slot_price_0_44%"
+    result:  "700"
+
+  1132:
+    placeholder: "%slot_price_1_9%"
+    result:  "100"
+
+  1177:
+    placeholder: "%slot_price_1_10%"
+    result:  "100"
+  1129:
+    placeholder: "%slot_price_1_11%"
+    result:  "200"
+  1139:
+    placeholder: "%slot_price_1_12%"
+    result:  "300"
+  1149:
+    placeholder: "%slot_price_1_13%"
+    result:  "400"
+  1159:
+    placeholder: "%slot_price_1_14%"
+    result:  "500"
+  1169:
+    placeholder: "%slot_price_1_15%"
+    result:  "600"
+  1179:
+    placeholder: "%slot_price_1_16%"
+    result:  "700"
+  1189:
+    placeholder: "%slot_price_1_17%"
+    result:  "700"
+  1199:
+    placeholder: "%slot_price_1_18%"
+    result:  "700"
+  1109:
+    placeholder: "%slot_price_1_19%"
+    result:  "700"
+  1119:
+    placeholder: "%slot_price_1_20%"
+    result:  "700"
+  112:
+    placeholder: "%slot_price_1_21%"
+    result:  "700"
+  113:
+    placeholder: "%slot_price_1_22%"
+    result:  "700"
+  114:
+    placeholder: "%slot_price_1_23%"
+    result:  "700"
+  115:
+    placeholder: "%slot_price_1_24%"
+    result:  "700"
+  116:
+    placeholder: "%slot_price_1_25%"
+    result:  "700"
+  117:
+    placeholder: "%slot_price_1_26%"
+    result:  "700"
+  118:
+    placeholder: "%slot_price_1_27%"
+    result:  "700"
+  119:
+    placeholder: "%slot_price_1_28%"
+    result:  "700"
+  120:
+    placeholder: "%slot_price_1_29%"
+    result:  "700"
+  121:
+    placeholder: "%slot_price_1_30%"
+    result:  "700"
+  122:
+    placeholder: "%slot_price_1_31%"
+    result:  "700"
+  123:
+    placeholder: "%slot_price_1_32%"
+    result:  "700"
+  124:
+    placeholder: "%slot_price_1_33%"
+    result:  "700"
+  125:
+    placeholder: "%slot_price_1_34%"
+    result:  "700"
+  126:
+    placeholder: "%slot_price_1_35%"
+    result:  "700"
+  127:
+    placeholder: "%slot_price_1_36%"
+    result:  "700"
+  128:
+    placeholder: "%slot_price_1_37%"
+    result:  "700"
+  129:
+    placeholder: "%slot_price_1_38%"
+    result:  "700"
+  130:
+    placeholder: "%slot_price_1_39%"
+    result:  "700"
+  131:
+    placeholder: "%slot_price_1_40%"
+    result:  "700"
+  132:
+    placeholder: "%slot_price_1_41%"
+    result:  "700"
+  133:
+    placeholder: "%slot_price_1_42%"
+    result:  "700"
+  134:
+    placeholder: "%slot_price_1_43%"
+    result:  "700"
+  135:
+    placeholder: "%slot_price_1_44%"
+    result:  "700"

@@ -1,0 +1,10 @@
+name: YcoordEnderChest
+version: '${project.version}'
+main: ru.ycoord.YcoordEnderChest
+api-version: '1.16'
+softdepend: []
+depend:
+  - YcoordCore
+  - PlaceholderAPI
+commands:
+  ec:
