@@ -90,9 +90,9 @@ public class EnderChestService {
         dc.add(player, key, "true");
     }
 
-    public boolean openEnderChest(Player player) {
-        EnderChestMenu menu = new EnderChestMenu(YcoordCore.getInstance().getMenus().get("EnderChest"));
-        menu.open(player);
+    public boolean openEnderChest(OfflinePlayer initiator, OfflinePlayer player) {
+        EnderChestMenu menu = new EnderChestMenu(player, YcoordCore.getInstance().getMenus().get("EnderChest"));
+        menu.open(initiator);
         return true;
     }
 }

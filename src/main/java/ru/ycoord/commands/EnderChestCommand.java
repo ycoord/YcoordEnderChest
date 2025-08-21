@@ -1,5 +1,6 @@
 package ru.ycoord.commands;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -76,13 +77,13 @@ public class EnderChestCommand extends AdminCommand {
 
         @Override
         public boolean execute(CommandSender sender, List<String> args, List<Object> params) {
-            if(!super.execute(sender, args, params))
+            if (!super.execute(sender, args, params))
                 return false;
 
-            if(sender instanceof Player player) {
+            if (sender instanceof Player player) {
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
-                service.getItemAsync(player, getParam(), getParam(), getParam(), false).thenAccept((itemInSlot)->{
-                    if(itemInSlot == null){
+                service.getItemAsync(player, getParam(), getParam(), getParam(), false).thenAccept((itemInSlot) -> {
+                    if (itemInSlot == null) {
                         return;
                     }
                     player.getInventory().addItem(itemInSlot);
@@ -106,13 +107,13 @@ public class EnderChestCommand extends AdminCommand {
 
         @Override
         public boolean execute(CommandSender sender, List<String> args, List<Object> params) {
-            if(!super.execute(sender, args, params))
+            if (!super.execute(sender, args, params))
                 return false;
 
-            if(sender instanceof Player player) {
+            if (sender instanceof Player player) {
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
 
-                service.setItemAsync(player, getParam(), getParam(), getParam(), player.getInventory().getItemInMainHand(), false).thenAccept((ok)->{
+                service.setItemAsync(player, getParam(), getParam(), getParam(), player.getInventory().getItemInMainHand(), false).thenAccept((ok) -> {
 
                 });
             }
@@ -132,12 +133,46 @@ public class EnderChestCommand extends AdminCommand {
         }
     }
 
+    public static class OpenCommand extends AdminCommand {
+
+        @Override
+        public List<Requirement> getRequirements(CommandSender sender) {
+            return List.of(new PlayerRequirement(this));
+        }
+
+        @Override
+        public String getName() {
+            return "open";
+        }
+
+        @Override
+        public boolean execute(CommandSender sender, List<String> args, List<Object> params) {
+            if (!super.execute(sender, args, params))
+                return false;
+
+
+            if (sender instanceof Player me) {
+                OfflinePlayer player = getParam();
+                EnderChestService service = YcoordEnderChest.getInstance().getService();
+                service.openEnderChest(me, player);
+            }
+
+
+            return true;
+        }
+
+        @Override
+        public String getDescription(CommandSender commandSender) {
+            return "открывает эндер-сундук указанного игрока";
+        }
+    }
 
     @Override
     public List<Requirement> getRequirements(CommandSender sender) {
         return List.of(new OptionalRequirement(this, List.of(
                 new GetCommand(),
-                new SetCommand()
+                new SetCommand(),
+                new OpenCommand()
         )));
     }
 
@@ -152,7 +187,7 @@ public class EnderChestCommand extends AdminCommand {
             return false;
         EnderChestService service = YcoordEnderChest.getInstance().getService();
         if (sender instanceof Player player)
-            service.openEnderChest(player);
+            service.openEnderChest(player, player);
         return true;
     }
 }
