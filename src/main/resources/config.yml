@@ -1,7 +1,15 @@
-max-slots: 52
+max-slots: 72
+currency:
+  name: MONEY
+
+blacklist:
+  - xybyn
+  - dscc
+
+
 messages:
-  no-money:
-    - Нет денег или предыдущий слот закрыт!
+  ec-no-money:
+    - "Нет денег или предыдущий слот закрыт! Ваш баланс: %balance%, нужно еще %diff%"
   slot-buy-success:
     - "Вы успешно приобрели слот %buy-slot% на странице %buy-page% за %buy-price%"
   slot-description:
@@ -18,222 +26,356 @@ messages:
     - "У игрока %player% в слоте %slot% на странице %page% нет предмета!"
   ec-item-got:
     - "Вам был выдан предмет игрока %player% в слоте %slot% на странице %page%"
-placeholders:
-  0:
-    placeholder: "%slot_price_0_9%"
-    result:  "100"
-  1:
-    placeholder: "%slot_price_0_10%"
-    result:  "100"
-  2:
-    placeholder: "%slot_price_0_11%"
-    result:  "200"
-  3:
-    placeholder: "%slot_price_0_12%"
-    result:  "300"
-  4:
-    placeholder: "%slot_price_0_13%"
-    result:  "400"
-  5:
-    placeholder: "%slot_price_0_14%"
-    result:  "500"
-  6:
-    placeholder: "%slot_price_0_15%"
-    result:  "600"
-  7:
-    placeholder: "%slot_price_0_16%"
-    result:  "700"
-  8:
-    placeholder: "%slot_price_0_17%"
-    result:  "700"
-  9:
-    placeholder: "%slot_price_0_18%"
-    result:  "700"
-  10:
-    placeholder: "%slot_price_0_19%"
-    result:  "700"
-  11:
-    placeholder: "%slot_price_0_20%"
-    result:  "700"
-  12:
-    placeholder: "%slot_price_0_21%"
-    result:  "700"
-  13:
-    placeholder: "%slot_price_0_22%"
-    result:  "700"
-  14:
-    placeholder: "%slot_price_0_23%"
-    result:  "700"
-  15:
-    placeholder: "%slot_price_0_24%"
-    result:  "700"
-  16:
-    placeholder: "%slot_price_0_25%"
-    result:  "700"
-  17:
-    placeholder: "%slot_price_0_26%"
-    result:  "700"
-  18:
-    placeholder: "%slot_price_0_27%"
-    result:  "700"
-  19:
-    placeholder: "%slot_price_0_28%"
-    result:  "700"
-  20:
-    placeholder: "%slot_price_0_29%"
-    result:  "700"
-  21:
-    placeholder: "%slot_price_0_30%"
-    result:  "700"
-  22:
-    placeholder: "%slot_price_0_31%"
-    result:  "700"
-  23:
-    placeholder: "%slot_price_0_32%"
-    result:  "700"
-  24:
-    placeholder: "%slot_price_0_33%"
-    result:  "700"
-  25:
-    placeholder: "%slot_price_0_34%"
-    result:  "700"
-  26:
-    placeholder: "%slot_price_0_35%"
-    result:  "700"
-  27:
-    placeholder: "%slot_price_0_36%"
-    result:  "700"
-  28:
-    placeholder: "%slot_price_0_37%"
-    result:  "700"
-  29:
-    placeholder: "%slot_price_0_38%"
-    result:  "700"
-  30:
-    placeholder: "%slot_price_0_39%"
-    result:  "700"
-  31:
-    placeholder: "%slot_price_0_40%"
-    result:  "700"
-  32:
-    placeholder: "%slot_price_0_41%"
-    result:  "700"
-  33:
-    placeholder: "%slot_price_0_42%"
-    result:  "700"
-  34:
-    placeholder: "%slot_price_0_43%"
-    result:  "700"
-  35:
-    placeholder: "%slot_price_0_44%"
-    result:  "700"
+  ec-slot-unlocked:
+    - "Вы успешно разблокировали слот %slot% на странице %page% за %price%"
+  ec-no-permission-use-other:
+    - "У вас нет прав пользоваться чужим эндер-сундуком!"
+  ec-blacklist:
+    - "Вы не можете взаимодействовать с эндер-сундуком данного игрока!"
+slots:
+  default-opened:
+    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
+    #1: [9, 10, 11, 12, 13, 14, 15, 16, 17]
 
-  1132:
-    placeholder: "%slot_price_1_9%"
-    result:  "100"
+  prices:
+    1:
+      36:
+        price: 100
+        require-page: 1
+        require-slot: 35
+      37:
+        price: 100
+        require-page: 1
+        require-slot: 36
+      38:
+        price: 100
+        require-page: 1
+        require-slot: 37
+      39:
+        price: 100
+        require-page: 1
+        require-slot: 38
+      40:
+        price: 100
+        require-page: 1
+        require-slot: 39
 
-  1177:
-    placeholder: "%slot_price_1_10%"
-    result:  "100"
-  1129:
-    placeholder: "%slot_price_1_11%"
-    result:  "200"
-  1139:
-    placeholder: "%slot_price_1_12%"
-    result:  "300"
-  1149:
-    placeholder: "%slot_price_1_13%"
-    result:  "400"
-  1159:
-    placeholder: "%slot_price_1_14%"
-    result:  "500"
-  1169:
-    placeholder: "%slot_price_1_15%"
-    result:  "600"
-  1179:
-    placeholder: "%slot_price_1_16%"
-    result:  "700"
-  1189:
-    placeholder: "%slot_price_1_17%"
-    result:  "700"
-  1199:
-    placeholder: "%slot_price_1_18%"
-    result:  "700"
-  1109:
-    placeholder: "%slot_price_1_19%"
-    result:  "700"
-  1119:
-    placeholder: "%slot_price_1_20%"
-    result:  "700"
-  112:
-    placeholder: "%slot_price_1_21%"
-    result:  "700"
-  113:
-    placeholder: "%slot_price_1_22%"
-    result:  "700"
-  114:
-    placeholder: "%slot_price_1_23%"
-    result:  "700"
-  115:
-    placeholder: "%slot_price_1_24%"
-    result:  "700"
-  116:
-    placeholder: "%slot_price_1_25%"
-    result:  "700"
-  117:
-    placeholder: "%slot_price_1_26%"
-    result:  "700"
-  118:
-    placeholder: "%slot_price_1_27%"
-    result:  "700"
-  119:
-    placeholder: "%slot_price_1_28%"
-    result:  "700"
-  120:
-    placeholder: "%slot_price_1_29%"
-    result:  "700"
-  121:
-    placeholder: "%slot_price_1_30%"
-    result:  "700"
-  122:
-    placeholder: "%slot_price_1_31%"
-    result:  "700"
-  123:
-    placeholder: "%slot_price_1_32%"
-    result:  "700"
-  124:
-    placeholder: "%slot_price_1_33%"
-    result:  "700"
-  125:
-    placeholder: "%slot_price_1_34%"
-    result:  "700"
-  126:
-    placeholder: "%slot_price_1_35%"
-    result:  "700"
-  127:
-    placeholder: "%slot_price_1_36%"
-    result:  "700"
-  128:
-    placeholder: "%slot_price_1_37%"
-    result:  "700"
-  129:
-    placeholder: "%slot_price_1_38%"
-    result:  "700"
-  130:
-    placeholder: "%slot_price_1_39%"
-    result:  "700"
-  131:
-    placeholder: "%slot_price_1_40%"
-    result:  "700"
-  132:
-    placeholder: "%slot_price_1_41%"
-    result:  "700"
-  133:
-    placeholder: "%slot_price_1_42%"
-    result:  "700"
-  134:
-    placeholder: "%slot_price_1_43%"
-    result:  "700"
-  135:
-    placeholder: "%slot_price_1_44%"
-    result:  "700"
+      41:
+        price: 100
+        require-page: 1
+        require-slot: 40
+      42:
+        price: 100
+        require-page: 1
+        require-slot: 41
+      43:
+        price: 100
+        require-page: 1
+        require-slot: 42
+      44:
+        price: 100
+        require-page: 1
+        require-slot: 43
+
+    2:
+      9:
+        price: 200
+        require-page: 1
+        require-slot: 44
+
+      10:
+        price: 200
+        require-page: 2
+        require-slot: 9
+
+      11:
+        price: 200
+        require-page: 2
+        require-slot: 10
+
+      12:
+        price: 200
+        require-page: 2
+        require-slot: 11
+
+      13:
+        price: 200
+        require-page: 2
+        require-slot: 12
+
+      14:
+        price: 200
+        require-page: 2
+        require-slot: 13
+      15:
+        price: 200
+        require-page: 2
+        require-slot: 14
+      16:
+        price: 200
+        require-page: 2
+        require-slot: 15
+      17:
+        price: 200
+        require-page: 2
+        require-slot: 16
+      18:
+        price: 200
+        require-page: 2
+        require-slot: 17
+      19:
+        price: 200
+        require-page: 2
+        require-slot: 18
+      20:
+        price: 200
+        require-page: 2
+        require-slot: 19
+      21:
+        price: 200
+        require-page: 2
+        require-slot: 20
+      22:
+        price: 200
+        require-page: 2
+        require-slot: 21
+      23:
+        price: 200
+        require-page: 2
+        require-slot: 22
+      24:
+        price: 200
+        require-page: 2
+        require-slot: 23
+      25:
+        price: 200
+        require-page: 2
+        require-slot: 24
+      26:
+        price: 200
+        require-page: 2
+        require-slot: 25
+      27:
+        price: 200
+        require-page: 2
+        require-slot: 26
+      28:
+        price: 200
+        require-page: 2
+        require-slot: 27
+      29:
+        price: 200
+        require-page: 2
+        require-slot: 28
+      30:
+        price: 200
+        require-page: 2
+        require-slot: 29
+      31:
+        price: 200
+        require-page: 2
+        require-slot: 30
+      32:
+        price: 200
+        require-page: 2
+        require-slot: 31
+      33:
+        price: 200
+        require-page: 2
+        require-slot: 32
+      34:
+        price: 200
+        require-page: 2
+        require-slot: 33
+      35:
+        price: 200
+        require-page: 2
+        require-slot: 34
+      36:
+        price: 200
+        require-page: 2
+        require-slot: 35
+      37:
+        price: 200
+        require-page: 2
+        require-slot: 36
+      38:
+        price: 200
+        require-page: 2
+        require-slot: 37
+      39:
+        price: 200
+        require-page: 2
+        require-slot: 38
+      40:
+        price: 200
+        require-page: 2
+        require-slot: 39
+
+      41:
+        price: 200
+        require-page: 2
+        require-slot: 40
+      42:
+        price: 200
+        require-page: 2
+        require-slot: 41
+      43:
+        price: 200
+        require-page: 2
+        require-slot: 42
+      44:
+        price: 200
+        require-page: 2
+        require-slot: 43
+    3:
+      9:
+        price: 300
+        require-page: 2
+        require-slot: 44
+
+      10:
+        price: 300
+        require-page: 3
+        require-slot: 9
+
+      11:
+        price: 300
+        require-page: 3
+        require-slot: 10
+
+      12:
+        price: 300
+        require-page: 3
+        require-slot: 11
+
+      13:
+        price: 300
+        require-page: 3
+        require-slot: 12
+
+      14:
+        price: 300
+        require-page: 3
+        require-slot: 13
+      15:
+        price: 300
+        require-page: 3
+        require-slot: 14
+      16:
+        price: 300
+        require-page: 3
+        require-slot: 15
+      17:
+        price: 300
+        require-page: 3
+        require-slot: 16
+      18:
+        price: 300
+        require-page: 3
+        require-slot: 17
+      19:
+        price: 300
+        require-page: 3
+        require-slot: 18
+      20:
+        price: 300
+        require-page: 3
+        require-slot: 19
+      21:
+        price: 300
+        require-page: 3
+        require-slot: 20
+      22:
+        price: 300
+        require-page: 3
+        require-slot: 21
+      23:
+        price: 300
+        require-page: 3
+        require-slot: 22
+      24:
+        price: 300
+        require-page: 3
+        require-slot: 23
+      25:
+        price: 300
+        require-page: 3
+        require-slot: 24
+      26:
+        price: 300
+        require-page: 3
+        require-slot: 25
+      27:
+        price: 300
+        require-page: 3
+        require-slot: 26
+      28:
+        price: 300
+        require-page: 3
+        require-slot: 27
+      29:
+        price: 300
+        require-page: 3
+        require-slot: 28
+      30:
+        price: 300
+        require-page: 3
+        require-slot: 29
+      31:
+        price: 300
+        require-page: 3
+        require-slot: 30
+      32:
+        price: 300
+        require-page: 3
+        require-slot: 31
+      33:
+        price: 300
+        require-page: 3
+        require-slot: 32
+      34:
+        price: 300
+        require-page: 3
+        require-slot: 33
+      35:
+        price: 300
+        require-page: 3
+        require-slot: 34
+      36:
+        price: 300
+        require-page: 3
+        require-slot: 35
+      37:
+        price: 300
+        require-page: 3
+        require-slot: 36
+      38:
+        price: 300
+        require-page: 3
+        require-slot: 37
+      39:
+        price: 300
+        require-page: 3
+        require-slot: 38
+      40:
+        price: 300
+        require-page: 3
+        require-slot: 39
+
+      41:
+        price: 300
+        require-page: 3
+        require-slot: 40
+      42:
+        price: 300
+        require-page: 3
+        require-slot: 41
+      43:
+        price: 300
+        require-page: 3
+        require-slot: 42
+      44:
+        price: 300
+        require-page: 3
+        require-slot: 43

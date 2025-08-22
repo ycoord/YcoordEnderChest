@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
@@ -13,12 +14,14 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import ru.ycoord.YcoordCore;
 import ru.ycoord.YcoordEnderChest;
+import ru.ycoord.core.gui.GuiBase;
 import ru.ycoord.core.gui.GuiPagedData;
 import ru.ycoord.core.gui.items.GuiItem;
 import ru.ycoord.core.gui.items.GuiMultiItem;
 import ru.ycoord.core.gui.items.GuiSlot;
 import ru.ycoord.core.messages.ChatMessage;
 import ru.ycoord.core.messages.MessageBase;
+import ru.ycoord.core.messages.MessagePlaceholders;
 import ru.ycoord.core.transaction.TransactionManager;
 import ru.ycoord.examples.guis.ExampleGuiSlotData;
 import ru.ycoord.services.EnderChestService;
@@ -35,7 +38,7 @@ public class EnderChestMenu extends GuiPagedData {
         lockOnAnimation = true;
     }
 
-    protected CompletableFuture<Boolean> setItemAsync(OfflinePlayer player, int slot, int page, Inventory inventory, ItemStack item) {
+    protected CompletableFuture<Boolean> setItemAsync(OfflinePlayer player, int slot, int page, ItemStack item) {
 
         EnderChestService service = YcoordEnderChest.getInstance().getService();
 
@@ -59,7 +62,7 @@ public class EnderChestMenu extends GuiPagedData {
                 if (item instanceof GuiSlot) {
                     ItemStack v = inventory.getItem(slot);
                     try {
-                        setItemAsync(player, slot, current, inventory, v).get();
+                        setItemAsync(player, slot, current, v).get();
                     } catch (Exception e) {
                         e.fillInStackTrace();
                     }
@@ -68,7 +71,7 @@ public class EnderChestMenu extends GuiPagedData {
                     if (currentItem instanceof GuiSlot) {
                         ItemStack v = inventory.getItem(slot);
                         try {
-                            setItemAsync(player, slot, current, inventory, v).get();
+                            setItemAsync(player, slot, current, v).get();
                         } catch (Exception e) {
                             e.fillInStackTrace();
                         }
@@ -76,7 +79,7 @@ public class EnderChestMenu extends GuiPagedData {
                 }
             }
 
-            List<? extends Player> players = Bukkit.getOnlinePlayers().stream().filter(p -> p.getPlayer() != clicker).toList();
+            List<? extends Player> players = Bukkit.getOnlinePlayers().stream().toList();
 
             for (Player p : players) {
                 InventoryView view = p.getOpenInventory();
@@ -92,7 +95,7 @@ public class EnderChestMenu extends GuiPagedData {
         }, 1);
     }
 
-    static class SlotItem extends GuiMultiItem {
+    class SlotItem extends GuiMultiItem {
         private final OfflinePlayer target;
         private final int currentPage;
 
@@ -108,35 +111,70 @@ public class EnderChestMenu extends GuiPagedData {
 
             assert section != null;
 
-            locked = new Locked(target, priority, slot, index, section.getConfigurationSection("locked"));
-            available = new Available(target, priority, slot, index, section.getConfigurationSection("available"));
-            unlocked = new Unlocked(target, currentPage, priority, slot, index, section.getConfigurationSection("unlocked"));
+            locked = new Locked(priority, slot, index, section.getConfigurationSection("locked"));
+            available = new Available(priority, slot, index, section.getConfigurationSection("available"));
+            unlocked = new Unlocked(currentPage, priority, slot, index, section.getConfigurationSection("unlocked"));
         }
 
-        static class Locked extends GuiItem {
-            private final OfflinePlayer target1;
-
-            public Locked(OfflinePlayer target, int priority, int slot, int index, @Nullable ConfigurationSection section) {
+        class Locked extends GuiItem {
+            public Locked(int priority, int slot, int index, @Nullable ConfigurationSection section) {
                 super(priority, slot, index, section);
-                target1 = target;
+            }
+
+            @Override
+            public boolean handleClick(GuiBase gui, InventoryClickEvent event, MessagePlaceholders placeholders) {
+                if (!super.handleClick(gui, event, placeholders))
+                    return false;
+
+                if (event.getWhoClicked() instanceof Player clicker) {
+                    if (!target.equals(clicker)) {
+                        ChatMessage message = YcoordCore.getInstance().getChatMessage();
+                        message.sendMessageIdAsync(MessageBase.Level.ERROR, clicker, "messages.ec-no-permission-use-other");
+                        return false;
+                    }
+                }
+                return true;
             }
         }
 
-        static class Available extends GuiItem {
-            private final OfflinePlayer target1;
-
-            public Available(OfflinePlayer target, int priority, int slot, int index, @Nullable ConfigurationSection section) {
+        class Available extends GuiItem {
+            public Available(int priority, int slot, int index, @Nullable ConfigurationSection section) {
                 super(priority, slot, index, section);
-                target1 = target;
+            }
+
+            @Override
+            public void getExtraPlaceholders(OfflinePlayer player, MessagePlaceholders placeholders, int slot, int index, GuiBase base) {
+                super.getExtraPlaceholders(player, placeholders, slot, index, base);
+                EnderChestService service = YcoordEnderChest.getInstance().getService();
+                Integer price = service.getPrice(target, currentPage, slot);
+                if (price != null) {
+                    placeholders.put("%price%", price);
+                }
+            }
+
+            @Override
+            public boolean handleClick(GuiBase gui, InventoryClickEvent event, MessagePlaceholders placeholders) {
+                if (!super.handleClick(gui, event, placeholders))
+                    return false;
+
+                EnderChestService service = YcoordEnderChest.getInstance().getService();
+
+                if (event.getWhoClicked() instanceof Player clicker) {
+                    if (!service.canBuySlots(clicker, target))
+                        return false;
+
+
+                    if (service.unlockSlot(clicker, target, currentPage, slot))
+                        saveAsync(clicker, target, event.getInventory());
+                }
+
+                return true;
             }
         }
 
-        static class Unlocked extends GuiSlot {
-            private final OfflinePlayer target1;
-
-            public Unlocked(OfflinePlayer target, int page, int priority, int slot, int index, @Nullable ConfigurationSection section) {
+        class Unlocked extends GuiSlot {
+            public Unlocked(int page, int priority, int slot, int index, @Nullable ConfigurationSection section) {
                 super(null, priority, slot, index, section);
-                target1 = target;
                 provider = (player) -> getItem(player, slot, page);
             }
 
@@ -146,7 +184,7 @@ public class EnderChestMenu extends GuiPagedData {
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
 
                 try {
-                    return service.getItemAsync(player, target1, page, slot, true).get();
+                    return service.getItemAsync(player, target, page, slot, true).get();
                 } catch (Exception e) {
                     e.fillInStackTrace();
                 }
@@ -159,12 +197,12 @@ public class EnderChestMenu extends GuiPagedData {
         @Override
         public GuiItem getCurrentSlot(OfflinePlayer player) {
             EnderChestService service = YcoordEnderChest.getInstance().getService();
-            EnderChestService.SlotStatus slotStatus = service.getSlotStatus(player, currentPage, slot);
+            EnderChestService.SlotStatus slotStatus = service.getSlotStatus(target, currentPage, slot);
             return getCurrentSlot(slotStatus);
         }
 
 
-        GuiItem getCurrentSlot(EnderChestService.SlotStatus slotStatus) {
+        private GuiItem getCurrentSlot(EnderChestService.SlotStatus slotStatus) {
             switch (slotStatus) {
                 case UNLOCKED -> {
                     return unlocked;
@@ -200,13 +238,16 @@ public class EnderChestMenu extends GuiPagedData {
         return false;
     }
 
-    boolean handleEvent(OfflinePlayer clicker, InventoryInteractEvent e) {
+    private void handleEvent(OfflinePlayer clicker, InventoryInteractEvent e) {
+        if (!YcoordEnderChest.getInstance().getService().canProcessClick(clicker, target)) {
+            e.setCancelled(true);
+            return;
+        }
         if (canNotProcess(target)) {
             e.setCancelled(true);
-            return false;
+            return;
         }
         saveAsync(clicker, target, e.getInventory());
-        return true;
     }
 
     @Override

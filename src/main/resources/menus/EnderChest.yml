@@ -14,23 +14,12 @@ animation:
     name: ""
   type: CORNER
   center: true
-  duration: 300
+  duration: 40
 
 filler-item:
   material: BARRIER
   name: "Пустота"
   lore: [ ]
-
-  click:
-    permission: "*"
-    no-permission-message-id: "messages.no-permission"
-    no-condition-message-id: "messages.no-condition"
-    actions:
-      - "[message] Hello %slot%"
-      - "[id-error] messages.unknown-command"
-      - "[console] feed %player%"
-      - "[player] heal %player%"
-      - "[console] lp user %player% meta set test value1"
 pattern:
   - "#########"
   - "XXXXXXXXX"
@@ -42,28 +31,16 @@ items:
   data-item:
     symbol: 'X'
     type: MARKER
-    locked:
-      material: BARRIER
-      name: "%title% Данные"
-      lore:
-        - "%bullet% Страница %page%/%pages%"
-        - "%bullet% Слот %slot%"
-        - "%bullet% Индекс %index%"
-        - "%bullet% Индекс страницы %page-index%"
-        - "%bullet% Индекс страницы {page-index}"
-        - "%bullet% Дата индекс %data-index%"
-        - "%bullet% Цена %yc_pl_{slot_price_{page-index}_{slot}}%"
     available:
-      material: APPLE
-      name: "%title% Данные"
+      redraw: true
+      material: ORANGE_STAINED_GLASS_PANE
+      name: "%title% Доступен для покупки"
       lore:
-        - "%bullet% Страница %page%/%pages%"
-        - "%bullet% Слот %slot%"
-        - "%bullet% Индекс %index%"
-        - "%bullet% Индекс страницы %page-index%"
-        - "%bullet% Индекс страницы {page-index}"
-        - "%bullet% Дата индекс %data-index%"
-        - "%bullet% Цена %yc_pl_{slot_price_{page-index}_{slot}}%"
+        - "%bullet% Цена: %yc_gr_~<#FB8000><#F2FF00>{yc_pl_{price} Ⓜ}%"
+    locked:
+      material: RED_STAINED_GLASS_PANE
+      name: "%title% Слот заблокирован"
+      lore: []
     unlock:
 
   next:

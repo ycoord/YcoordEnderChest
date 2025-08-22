@@ -21,7 +21,9 @@ public final class YcoordEnderChest extends YcoordPlugin {
         super.onEnable();
         instance = this;
 
-        service = new EnderChestService(new ItemStorageService(this));
+        service = new EnderChestService(new ItemStorageService(this),
+                getConfig().getConfigurationSection("slots"),
+                getConfig().getStringList("blacklist"));
         if (doesntRequirePlugin(this, "YcoordCore"))
             return;
     }

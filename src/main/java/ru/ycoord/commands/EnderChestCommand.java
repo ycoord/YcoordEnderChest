@@ -16,124 +16,23 @@ import ru.ycoord.services.EnderChestService;
 
 import java.util.List;
 
-public class EnderChestCommand extends AdminCommand {
+public class EnderChestCommand extends Command {
     @Override
     public String getName() {
         return "ec";
     }
 
-
-    static class PageRequirement extends RangedIntegerRequirement {
-
-        public PageRequirement(Command command) {
-            super(command, 0, 10);
-        }
-
-        @Override
-        public void sendDescription(CommandSender sender) {
-            if (sender instanceof Player player) {
-                YcoordCore.getInstance().getChatMessage().sendMessageIdAsync(MessageBase.Level.NONE, player, "messages.page-description");
-            }
-
-        }
+    @Override
+    public boolean canExecute(CommandSender sender) {
+        return YcoordEnderChest.getInstance().getService().canUse((Player) sender);
     }
 
-    static class SlotRequirement extends RangedIntegerRequirement {
 
-        public SlotRequirement(Command command) {
-            super(command, 0, 53);
-        }
-
+    public static class OpenCommand extends Command {
         @Override
-        public void sendDescription(CommandSender sender) {
-            if (sender instanceof Player player) {
-                YcoordCore.getInstance().getChatMessage().sendMessageIdAsync(MessageBase.Level.NONE, player, "messages.slot-description");
-            }
-
+        public boolean canExecute(CommandSender sender) {
+            return YcoordEnderChest.getInstance().getService().canOpen((Player) sender, (Player) sender);
         }
-    }
-
-    public static class GetCommand extends AdminCommand {
-
-
-        @Override
-        public List<Requirement> getRequirements(CommandSender sender) {
-            return List.of(
-                    new OnlinePlayerRequirement(this),
-                    new PageRequirement(this),
-                    new SlotRequirement(this)
-            );
-        }
-
-        @Override
-        public String getName() {
-            return "get";
-        }
-
-        @Override
-        public String getDescription(CommandSender commandSender) {
-            return YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, "messages.get-command-description", new MessagePlaceholders(null));
-        }
-
-        @Override
-        public boolean execute(CommandSender sender, List<String> args, List<Object> params) {
-            if (!super.execute(sender, args, params))
-                return false;
-
-            if (sender instanceof Player player) {
-                EnderChestService service = YcoordEnderChest.getInstance().getService();
-                service.getItemAsync(player, getParam(), getParam(), getParam(), false).thenAccept((itemInSlot) -> {
-                    if (itemInSlot == null) {
-                        return;
-                    }
-                    player.getInventory().addItem(itemInSlot);
-                });
-            }
-
-            return true;
-        }
-    }
-
-    public static class SetCommand extends AdminCommand {
-
-        @Override
-        public List<Requirement> getRequirements(CommandSender sender) {
-            return List.of(
-                    new OnlinePlayerRequirement(this),
-                    new PageRequirement(this),
-                    new SlotRequirement(this)
-            );
-        }
-
-        @Override
-        public boolean execute(CommandSender sender, List<String> args, List<Object> params) {
-            if (!super.execute(sender, args, params))
-                return false;
-
-            if (sender instanceof Player player) {
-                EnderChestService service = YcoordEnderChest.getInstance().getService();
-
-                service.setItemAsync(player, getParam(), getParam(), getParam(), player.getInventory().getItemInMainHand(), false).thenAccept((ok) -> {
-
-                });
-            }
-
-
-            return true;
-        }
-
-        @Override
-        public String getName() {
-            return "set";
-        }
-
-        @Override
-        public String getDescription(CommandSender commandSender) {
-            return YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, "messages.set-command-description", new MessagePlaceholders(null));
-        }
-    }
-
-    public static class OpenCommand extends AdminCommand {
 
         @Override
         public List<Requirement> getRequirements(CommandSender sender) {
@@ -153,6 +52,10 @@ public class EnderChestCommand extends AdminCommand {
 
             if (sender instanceof Player me) {
                 OfflinePlayer player = getParam();
+
+                if(!YcoordEnderChest.getInstance().getService().canOpen(me,player))
+                    return false;
+
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
                 service.openEnderChest(me, player);
             }
@@ -170,8 +73,6 @@ public class EnderChestCommand extends AdminCommand {
     @Override
     public List<Requirement> getRequirements(CommandSender sender) {
         return List.of(new OptionalRequirement(this, List.of(
-                new GetCommand(),
-                new SetCommand(),
                 new OpenCommand()
         )));
     }
