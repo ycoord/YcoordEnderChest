@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.ycoord.YcoordCore;
 import ru.ycoord.YcoordEnderChest;
+import ru.ycoord.core.balance.Balance;
 import ru.ycoord.core.balance.IBalance;
 import ru.ycoord.core.messages.ChatMessage;
 import ru.ycoord.core.messages.MessageBase;
@@ -94,20 +95,20 @@ public class EnderChestService {
         return pageSection.getConfigurationSection(String.valueOf(slot));
     }
 
-    public boolean canUse(Player player){
+    public boolean canUse(Player player) {
         return player.hasPermission("yc.ec.use");
     }
 
-    public boolean canOpen(Player player, OfflinePlayer owner){
-        if(player.getName().equals(owner.getName())){
+    public boolean canOpen(Player player, OfflinePlayer owner) {
+        if (player.getName().equals(owner.getName())) {
             return player.hasPermission("yc.ec.open");
         }
 
         return player.hasPermission("yc.ec.open") && checkPlayerNotInBlacklist(player, owner);
     }
 
-    public boolean canBuySlots(Player clicker, OfflinePlayer owner){
-        if(!owner.equals(clicker) && !clicker.hasPermission("yc.ec.buy.other")) {
+    public boolean canBuySlots(Player clicker, OfflinePlayer owner) {
+        if (!owner.equals(clicker) && !clicker.hasPermission("yc.ec.buy.other")) {
             ChatMessage message = YcoordCore.getInstance().getChatMessage();
             message.sendMessageIdAsync(MessageBase.Level.ERROR, clicker, "messages.ec-no-permission-use-other");
             return false;
@@ -115,10 +116,10 @@ public class EnderChestService {
         return true;
     }
 
-    public boolean checkPlayerNotInBlacklist(Player receiver,  OfflinePlayer player){
-        if(receiver.hasPermission("yc.ec.blacklist.bypass"))
+    public boolean checkPlayerNotInBlacklist(Player receiver, OfflinePlayer player) {
+        if (receiver.hasPermission("yc.ec.blacklist.bypass"))
             return true;
-        if(blacklist.contains(player.getName())) {
+        if (blacklist.contains(player.getName())) {
             ChatMessage message = YcoordCore.getInstance().getChatMessage();
             message.sendMessageIdAsync(MessageBase.Level.ERROR, receiver, "messages.ec-blacklist");
             return false;
@@ -127,7 +128,7 @@ public class EnderChestService {
         return true;
     }
 
-    public boolean canProcessClick(OfflinePlayer clicker, OfflinePlayer chestOwner){
+    public boolean canProcessClick(OfflinePlayer clicker, OfflinePlayer chestOwner) {
         if (!clicker.equals(chestOwner)) {
             if (clicker instanceof Player player) {
                 if (!player.hasPermission("yc.ec.use.other")) {
@@ -154,6 +155,14 @@ public class EnderChestService {
         }
 
         return pageSection.getInt("price");
+    }
+
+    public String getCurrency(int page, int slot) {
+        ConfigurationSection pageSection = getSlotConfig(page, slot);
+        if (pageSection == null) {
+            return null;
+        }
+        return pageSection.getString("currency", "DONATE");
     }
 
     private boolean slotUnlocked(OfflinePlayer player, int page, int slot) {
@@ -207,38 +216,44 @@ public class EnderChestService {
         return SlotStatus.LOCKED;
     }
 
+    public Balance getBalance(int page, int slot) {
+        String currency = getCurrency(page, slot);
+        return YcoordCore.getInstance().getBalance(currency);
+    }
+
 
     public boolean unlockSlot(Player payer, OfflinePlayer offlinePlayer, int page, int slot) {
         Integer price = getPrice(offlinePlayer, page, slot);
         if (price == null) {
             return false;
         }
-        if(offlinePlayer instanceof Player player) {
-            ChatMessage cm = YcoordCore.getInstance().getChatMessage();
-            IBalance balance = YcoordEnderChest.getInstance().getCurrenyBalance();
-            double currentBalance = balance.get(payer);
-            MessagePlaceholders placeholders = new MessagePlaceholders(player);
-            placeholders.put("%page%", page);
-            placeholders.put("%slot%", slot);
-            placeholders.put("%price%", price);
-            placeholders.put("%balance%", price);
-            placeholders.put("%diff%", Math.abs(price - currentBalance));
 
-            if(currentBalance < price) {
-                cm.sendMessageIdAsync(MessageBase.Level.ERROR, payer, "messages.ec-no-money", placeholders);
-                return false;
-            }
+        ChatMessage cm = YcoordCore.getInstance().getChatMessage();
+        Balance balance = getBalance(page, slot);
+        double currentBalance = balance.get(payer);
+        MessagePlaceholders placeholders = new MessagePlaceholders(offlinePlayer);
 
-            balance.withdraw(payer, price);
 
-            PlayerDataCache pdc = YcoordCore.getInstance().getPlayerDataCache();
-            String perm = String.format(permission, page, slot);
-            pdc.add(player, perm, "true");
+        placeholders.put("%page%", page);
+        placeholders.put("%slot%", slot);
+        placeholders.put("%price%", balance.format(price));
+        placeholders.put("%balance%", balance.format((int) currentBalance));
+        placeholders.put("%diff%",  balance.format((int) Math.abs(price - currentBalance)));
 
-            cm.sendMessageIdAsync(MessageBase.Level.SUCCESS, payer, "messages.ec-slot-unlocked", placeholders);
-            return true;
+        if (currentBalance < price) {
+            cm.sendMessageIdAsync(MessageBase.Level.ERROR, payer, "messages.ec-no-money", placeholders);
+            return false;
         }
-        return false;
+
+        balance.withdraw(payer, price);
+
+        PlayerDataCache pdc = YcoordCore.getInstance().getPlayerDataCache();
+        String perm = String.format(permission, page, slot);
+        pdc.add(offlinePlayer, perm, "true");
+
+        cm.sendMessageIdAsync(MessageBase.Level.SUCCESS, payer, "messages.ec-slot-unlocked", placeholders);
+        return true;
+
     }
 
     public boolean openEnderChest(OfflinePlayer initiator, OfflinePlayer player) {

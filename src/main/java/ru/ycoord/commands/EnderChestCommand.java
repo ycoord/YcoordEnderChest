@@ -57,7 +57,7 @@ public class EnderChestCommand extends Command {
                     return false;
 
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
-                service.openEnderChest(me, player);
+                return service.openEnderChest(me, player);
             }
 
 
@@ -88,7 +88,7 @@ public class EnderChestCommand extends Command {
             return false;
         EnderChestService service = YcoordEnderChest.getInstance().getService();
         if (sender instanceof Player player)
-            service.openEnderChest(player, player);
+            return service.openEnderChest(player, player);
         return true;
     }
 }

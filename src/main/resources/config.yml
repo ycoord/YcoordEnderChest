@@ -1,6 +1,4 @@
 max-slots: 72
-currency:
-  name: MONEY
 
 blacklist:
   - xybyn
@@ -41,22 +39,27 @@ slots:
     1:
       36:
         price: 100
+        currency: MONEY
         require-page: 1
         require-slot: 35
       37:
         price: 100
+        currency: MONEY
         require-page: 1
         require-slot: 36
       38:
         price: 100
+        currency: MONEY
         require-page: 1
         require-slot: 37
       39:
         price: 100
+        currency: MONEY
         require-page: 1
         require-slot: 38
       40:
         price: 100
+        currency: MONEY
         require-page: 1
         require-slot: 39
 
@@ -80,25 +83,30 @@ slots:
     2:
       9:
         price: 200
+        currency: LEVEL
         require-page: 1
         require-slot: 44
 
       10:
         price: 200
+        currency: EXP
         require-page: 2
         require-slot: 9
 
       11:
+        currency: MONEY
         price: 200
         require-page: 2
         require-slot: 10
 
       12:
+        currency: DONATE
         price: 200
         require-page: 2
         require-slot: 11
 
       13:
+        currency: CUSTOM1
         price: 200
         require-page: 2
         require-slot: 12

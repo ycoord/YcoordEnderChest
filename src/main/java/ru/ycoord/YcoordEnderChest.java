@@ -3,6 +3,7 @@ package ru.ycoord;
 import ru.ycoord.commands.EnderChestCommand;
 import ru.ycoord.core.commands.Command;
 import ru.ycoord.core.placeholder.IPlaceholderAPI;
+import ru.ycoord.events.EnderChestEvent;
 import ru.ycoord.placeholders.EnderChestPlaceholder;
 import ru.ycoord.services.EnderChestService;
 import ru.ycoord.services.ItemStorageService;
@@ -26,6 +27,8 @@ public final class YcoordEnderChest extends YcoordPlugin {
                 getConfig().getStringList("blacklist"));
         if (doesntRequirePlugin(this, "YcoordCore"))
             return;
+
+        this.getServer().getPluginManager().registerEvents(new EnderChestEvent(), this);
     }
 
     @Override

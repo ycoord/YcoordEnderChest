@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import ru.ycoord.YcoordCore;
 import ru.ycoord.YcoordEnderChest;
+import ru.ycoord.core.balance.Balance;
 import ru.ycoord.core.gui.GuiBase;
 import ru.ycoord.core.gui.GuiPagedData;
 import ru.ycoord.core.gui.items.GuiItem;
@@ -54,7 +55,7 @@ public class EnderChestMenu extends GuiPagedData {
         return "SAVE_SLOT_DATA";
     }
 
-    private void saveAsync(OfflinePlayer clicker, OfflinePlayer player, Inventory inventory) {
+    private void saveAsync(OfflinePlayer clicker, OfflinePlayer player, Inventory inventory, boolean updateForClicker) {
         TransactionManager.lock(getKey(player), getValue(player));
         Bukkit.getScheduler().runTaskLaterAsynchronously(YcoordCore.getInstance(), (task) -> {
             for (Integer slot : slots.keySet()) {
@@ -79,7 +80,7 @@ public class EnderChestMenu extends GuiPagedData {
                 }
             }
 
-            List<? extends Player> players = Bukkit.getOnlinePlayers().stream().toList();
+            List<? extends Player> players = Bukkit.getOnlinePlayers().stream().filter(p -> updateForClicker || p.getPlayer() != clicker).toList();
 
             for (Player p : players) {
                 InventoryView view = p.getOpenInventory();
@@ -147,8 +148,11 @@ public class EnderChestMenu extends GuiPagedData {
                 super.getExtraPlaceholders(player, placeholders, slot, index, base);
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
                 Integer price = service.getPrice(target, currentPage, slot);
+                String currency = service.getCurrency(currentPage, slot);
+                Balance balance = YcoordCore.getInstance().getBalance(currency);
                 if (price != null) {
-                    placeholders.put("%price%", price);
+                    assert balance != null;
+                    placeholders.put("%price%", balance.format(price));
                 }
             }
 
@@ -165,7 +169,7 @@ public class EnderChestMenu extends GuiPagedData {
 
 
                     if (service.unlockSlot(clicker, target, currentPage, slot))
-                        saveAsync(clicker, target, event.getInventory());
+                        saveAsync(clicker, target, event.getInventory(), true);
                 }
 
                 return true;
@@ -247,7 +251,7 @@ public class EnderChestMenu extends GuiPagedData {
             e.setCancelled(true);
             return;
         }
-        saveAsync(clicker, target, e.getInventory());
+        saveAsync(clicker, target, e.getInventory(), false);
     }
 
     @Override
