@@ -51,4 +51,4 @@ items:
     type: OWNER_HEAD
     name: "%title% Информация"
     lore:
-      - "%bullet% Владелец: %owner%"
+      - "%bullet% Владелец: %nick%%owner%"

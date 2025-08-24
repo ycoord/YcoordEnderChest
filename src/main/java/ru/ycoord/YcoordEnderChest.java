@@ -1,5 +1,6 @@
 package ru.ycoord;
 
+import org.bukkit.configuration.ConfigurationSection;
 import ru.ycoord.commands.EnderChestCommand;
 import ru.ycoord.core.commands.Command;
 import ru.ycoord.core.placeholder.IPlaceholderAPI;
@@ -18,18 +19,25 @@ public final class YcoordEnderChest extends YcoordPlugin {
     public static YcoordEnderChest getInstance() {
         return instance;
     }
+
     @Override
     public void onEnable() {
-        super.onEnable();
         instance = this;
 
+        super.onEnable();
+    }
+
+    @Override
+    public void load(ConfigurationSection cfg, boolean reload) {
+        super.load(cfg, reload);
         service = new EnderChestService(new ItemStorageService(this),
                 Objects.requireNonNull(getConfig().getConfigurationSection("slots")),
                 getConfig().getStringList("blacklist"));
         if (doesntRequirePlugin(this, "YcoordCore"))
             return;
 
-        this.getServer().getPluginManager().registerEvents(new EnderChestEvent(), this);
+        if (!reload)
+            this.getServer().getPluginManager().registerEvents(new EnderChestEvent(), this);
     }
 
     @Override
