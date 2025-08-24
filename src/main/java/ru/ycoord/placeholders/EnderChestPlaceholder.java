@@ -1,6 +1,7 @@
 package ru.ycoord.placeholders;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import ru.ycoord.YcoordEnderChest;
 import ru.ycoord.core.placeholder.IPlaceholderAPI;
@@ -15,7 +16,7 @@ public class EnderChestPlaceholder extends IPlaceholderAPI {
     }
 
     @Override
-    public String process(Player player, List<String> list) {
+    public String process(OfflinePlayer player, List<String> list) {
         if (!list.isEmpty()) {
             String mode = list.get(0);
             if (mode.equalsIgnoreCase("status")) {

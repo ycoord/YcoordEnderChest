@@ -21,12 +21,12 @@ filler-item:
   name: "Пустота"
   lore: [ ]
 pattern:
-  - "#########"
+  - "####V####"
   - "XXXXXXXXX"
   - "XXXXXXXXX"
   - "XXXXXXXXX"
   - "XXXXXXXXX"
-  - "###<#>###"
+  - "###<~>###"
 items:
   data-item:
     symbol: 'X'
@@ -49,13 +49,28 @@ items:
     symbol: '>'
     type: NEXT
     material: ARROW
-    name: "%title% Вперед"
+    name: "%next% Следующая"
     lore:
       - "%lmb% перейти"
   prev:
     symbol: '<'
     type: PREV
     material: ARROW
-    name: "%title% Назад"
+    name: "%prev% Предыдущая"
     lore:
       - "%lmb% перейти"
+  back:
+    symbol: '~'
+    type: BACK
+    material: HOPPER
+    name: "%back% Назад"
+    lore:
+      - "%bullet% Страница: %page%/%pages%"
+      - ""
+      - "%lmb% перейти"
+  owner:
+    symbol: 'V'
+    type: OWNER_HEAD
+    name: "%title% Информация"
+    lore:
+      - "%bullet% Владелец: %owner%"

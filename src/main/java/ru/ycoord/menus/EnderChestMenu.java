@@ -17,6 +17,7 @@ import ru.ycoord.YcoordEnderChest;
 import ru.ycoord.core.balance.Balance;
 import ru.ycoord.core.gui.GuiBase;
 import ru.ycoord.core.gui.GuiPagedData;
+import ru.ycoord.core.gui.items.GuiHeadItem;
 import ru.ycoord.core.gui.items.GuiItem;
 import ru.ycoord.core.gui.items.GuiMultiItem;
 import ru.ycoord.core.gui.items.GuiSlot;
@@ -45,6 +46,20 @@ public class EnderChestMenu extends GuiPagedData {
 
         return service.setItemAsync(player, player, page, slot, item, true);
 
+    }
+
+    @Override
+    public void getExtraPlaceholders(MessagePlaceholders placeholders) {
+        super.getExtraPlaceholders(placeholders);
+        placeholders.put("%owner%", target.getName());
+    }
+
+    @Override
+    public GuiItem makeItem(int currentIndex, int slot, int priority, OfflinePlayer player, String type, ConfigurationSection section) {
+        if (type.equalsIgnoreCase("OWNER_HEAD")) {
+            return new GuiHeadItem(target.getName() == null ? target.getUniqueId().toString() : target.getName(), priority, slot, currentIndex, section);
+        }
+        return super.makeItem(currentIndex, slot, priority, player, type, section);
     }
 
     protected String getKey(OfflinePlayer player) {
@@ -139,10 +154,10 @@ public class EnderChestMenu extends GuiPagedData {
 
             @Override
             public List<String> getLoreAfter(OfflinePlayer ignored) {
-                List<String> lore =  super.getLoreAfter(ignored);
+                List<String> lore = super.getLoreAfter(ignored);
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
                 String descId = service.getDescId(currentPage, slot);
-                if(descId == null)
+                if (descId == null)
                     return lore;
                 lore.add(YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, descId, new MessagePlaceholders(ignored)));
 
@@ -171,10 +186,10 @@ public class EnderChestMenu extends GuiPagedData {
 
             @Override
             public List<String> getLoreAfter(OfflinePlayer ignored) {
-                List<String> lore =  super.getLoreAfter(ignored);
+                List<String> lore = super.getLoreAfter(ignored);
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
                 String descId = service.getDescId(currentPage, slot);
-                if(descId == null)
+                if (descId == null)
                     return lore;
                 lore.add(YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, descId, new MessagePlaceholders(ignored)));
 
