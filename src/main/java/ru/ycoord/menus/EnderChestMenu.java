@@ -204,6 +204,11 @@ public class EnderChestMenu extends GuiPagedData {
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
 
                 if (event.getWhoClicked() instanceof Player clicker) {
+                    if (service.unlockSlotForce(clicker, target, currentPage, slot)) {
+                        saveAsync(clicker, target, event.getInventory(), true);
+                        return true;
+                    }
+
                     if (!service.canBuySlots(clicker, target))
                         return false;
 

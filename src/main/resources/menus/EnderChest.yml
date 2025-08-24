@@ -45,29 +45,7 @@ items:
       lore:
         - "%bullet% Купите предыдущий слот"
     unlock:
-  next:
-    symbol: '>'
-    type: NEXT
-    material: ARROW
-    name: "%next% Следующая"
-    lore:
-      - "%lmb% перейти"
-  prev:
-    symbol: '<'
-    type: PREV
-    material: ARROW
-    name: "%prev% Предыдущая"
-    lore:
-      - "%lmb% перейти"
-  back:
-    symbol: '~'
-    type: BACK
-    material: HOPPER
-    name: "%back% Назад"
-    lore:
-      - "%bullet% Страница: %page%/%pages%"
-      - ""
-      - "%lmb% перейти"
+
   owner:
     symbol: 'V'
     type: OWNER_HEAD

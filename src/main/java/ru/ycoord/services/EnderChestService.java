@@ -108,6 +108,11 @@ public class EnderChestService {
         return true;
     }
 
+    public boolean canUnlockSlot(Player clicker) {
+        return clicker.hasPermission("yc.ec.unlock");
+    }
+
+
     public boolean checkPlayerNotInBlacklist(Player receiver, OfflinePlayer player) {
         if (receiver.hasPermission("yc.ec.blacklist.bypass"))
             return true;
@@ -222,6 +227,34 @@ public class EnderChestService {
     }
 
 
+    public void unlock(OfflinePlayer offlinePlayer, int page, int slot) {
+        PlayerDataCache pdc = YcoordEnderChest.getInstance().getPlayerDataCache();
+        String perm = String.format(permission, page, slot);
+        pdc.add(offlinePlayer, perm, "true");
+    }
+
+
+    public boolean unlockSlotForce(Player clicker, OfflinePlayer target, int currentPage, int slot) {
+        if (!canUnlockSlot(clicker)) {
+            return false;
+        }
+
+        unlock(target, currentPage, slot);
+        ChatMessage cm = YcoordCore.getInstance().getChatMessage();
+
+        MessagePlaceholders placeholders = new MessagePlaceholders(clicker);
+
+
+        placeholders.put("%page%", currentPage);
+        placeholders.put("%slot%", slot);
+        placeholders.put("%player%", target.getName());
+        placeholders.put("%initiator%", clicker.getName());
+
+        cm.sendMessageIdAsync(MessageBase.Level.SUCCESS, clicker, "messages.ec-unlocked", placeholders);
+        cm.sendMessageIdAsync(MessageBase.Level.SUCCESS, target, "messages.ec-unlocked-other", placeholders);
+        return true;
+    }
+
     public boolean unlockSlot(Player payer, OfflinePlayer offlinePlayer, int page, int slot) {
         Integer price = getPrice(offlinePlayer, page, slot);
         if (price == null) {
@@ -238,7 +271,7 @@ public class EnderChestService {
         placeholders.put("%slot%", slot);
         placeholders.put("%price%", balance.format(price));
         placeholders.put("%balance%", balance.format(currentBalance));
-        placeholders.put("%diff%",  balance.format(Math.abs(price - currentBalance)));
+        placeholders.put("%diff%", balance.format(Math.abs(price - currentBalance)));
 
         if (currentBalance < price) {
             cm.sendMessageIdAsync(MessageBase.Level.ERROR, payer, "messages.ec-no-money", placeholders);
@@ -247,9 +280,7 @@ public class EnderChestService {
 
         balance.withdraw(payer, price);
 
-        PlayerDataCache pdc = YcoordEnderChest.getInstance().getPlayerDataCache();
-        String perm = String.format(permission, page, slot);
-        pdc.add(offlinePlayer, perm, "true");
+        unlock(offlinePlayer, page, slot);
 
         cm.sendMessageIdAsync(MessageBase.Level.SUCCESS, payer, "messages.ec-slot-unlocked", placeholders);
         return true;
