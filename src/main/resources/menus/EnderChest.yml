@@ -1,5 +1,5 @@
 name: "EnderChest"
-title: '%logo-inv% Меню клана'
+title: '%logo-inv% Эндер-сундук'
 size: 54
 type: PAGED
 open-sound:
@@ -33,31 +33,29 @@ items:
     type: MARKER
     available:
       redraw: true
-      material: ORANGE_STAINED_GLASS_PANE
+      glow: true
+      material: ENDER_EYE
       name: "%title% Доступен для покупки"
       lore:
         - "%bullet% Цена: %price%"
+        - ""
     locked:
-      material: RED_STAINED_GLASS_PANE
-      name: "%title% Слот заблокирован"
-      lore: []
+      material: ENDER_PEARL
+      name: "%title-red% Заблокировано"
+      lore:
+        - "%bullet% Купите предыдущий слот"
     unlock:
-
   next:
     symbol: '>'
     type: NEXT
     material: ARROW
     name: "%title% Вперед"
     lore:
-      - "%bullet% Страница %page%/%pages%"
-      - "%bullet% Слот %slot%"
-      - "%bullet% Индекс %index%"
+      - "%lmb% перейти"
   prev:
     symbol: '<'
     type: PREV
     material: ARROW
     name: "%title% Назад"
     lore:
-      - "%bullet% Страница %page%/%pages%"
-      - "%bullet% Слот %slot%"
-      - "%bullet% Индекс %index%"
+      - "%lmb% перейти"

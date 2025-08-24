@@ -136,6 +136,18 @@ public class EnderChestMenu extends GuiPagedData {
                 }
                 return true;
             }
+
+            @Override
+            public List<String> getLoreAfter(OfflinePlayer ignored) {
+                List<String> lore =  super.getLoreAfter(ignored);
+                EnderChestService service = YcoordEnderChest.getInstance().getService();
+                String descId = service.getDescId(currentPage, slot);
+                if(descId == null)
+                    return lore;
+                lore.add(YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, descId, new MessagePlaceholders(ignored)));
+
+                return lore;
+            }
         }
 
         class Available extends GuiItem {
@@ -149,11 +161,24 @@ public class EnderChestMenu extends GuiPagedData {
                 EnderChestService service = YcoordEnderChest.getInstance().getService();
                 Integer price = service.getPrice(target, currentPage, slot);
                 String currency = service.getCurrency(currentPage, slot);
+
                 Balance balance = YcoordCore.getInstance().getBalance(currency);
                 if (price != null) {
                     assert balance != null;
                     placeholders.put("%price%", balance.format(price));
                 }
+            }
+
+            @Override
+            public List<String> getLoreAfter(OfflinePlayer ignored) {
+                List<String> lore =  super.getLoreAfter(ignored);
+                EnderChestService service = YcoordEnderChest.getInstance().getService();
+                String descId = service.getDescId(currentPage, slot);
+                if(descId == null)
+                    return lore;
+                lore.add(YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, descId, new MessagePlaceholders(ignored)));
+
+                return lore;
             }
 
             @Override

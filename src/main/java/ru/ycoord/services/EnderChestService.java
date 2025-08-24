@@ -4,22 +4,18 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permissible;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.ycoord.YcoordCore;
 import ru.ycoord.YcoordEnderChest;
 import ru.ycoord.core.balance.Balance;
-import ru.ycoord.core.balance.IBalance;
 import ru.ycoord.core.messages.ChatMessage;
 import ru.ycoord.core.messages.MessageBase;
 import ru.ycoord.core.messages.MessagePlaceholders;
 import ru.ycoord.core.persistance.PlayerDataCache;
 import ru.ycoord.menus.EnderChestMenu;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class EnderChestService {
@@ -34,10 +30,6 @@ public class EnderChestService {
         this.prices = slots.getConfigurationSection("prices");
         this.defaultSlots = slots.getConfigurationSection("default-opened");
         this.blacklist = blacklist;
-    }
-
-    public ItemStorageService getItemStorageService() {
-        return itemStorageService;
     }
 
     public CompletableFuture<Boolean> setItemAsync(OfflinePlayer initiator, OfflinePlayer player, int page, int slot, @NotNull ItemStack itemInMainHand, boolean silent) {
@@ -165,6 +157,14 @@ public class EnderChestService {
         return pageSection.getString("currency", "DONATE");
     }
 
+    public String getDescId(int page, int slot) {
+        ConfigurationSection pageSection = getSlotConfig(page, slot);
+        if (pageSection == null) {
+            return null;
+        }
+        return pageSection.getString("desc-id", null);
+    }
+
     private boolean slotUnlocked(OfflinePlayer player, int page, int slot) {
         ConfigurationSection pageSection = getSlotConfig(page, slot);
         if (pageSection == null) {
@@ -199,7 +199,7 @@ public class EnderChestService {
             return true;
         }
 
-        PlayerDataCache pdc = YcoordCore.getInstance().getPlayerDataCache();
+        PlayerDataCache pdc = YcoordEnderChest.getInstance().getPlayerDataCache();
 
         return pdc.has(player, perm);
     }
@@ -230,15 +230,15 @@ public class EnderChestService {
 
         ChatMessage cm = YcoordCore.getInstance().getChatMessage();
         Balance balance = getBalance(page, slot);
-        double currentBalance = balance.get(payer);
+        int currentBalance = balance.get(payer);
         MessagePlaceholders placeholders = new MessagePlaceholders(offlinePlayer);
 
 
         placeholders.put("%page%", page);
         placeholders.put("%slot%", slot);
         placeholders.put("%price%", balance.format(price));
-        placeholders.put("%balance%", balance.format((int) currentBalance));
-        placeholders.put("%diff%",  balance.format((int) Math.abs(price - currentBalance)));
+        placeholders.put("%balance%", balance.format(currentBalance));
+        placeholders.put("%diff%",  balance.format(Math.abs(price - currentBalance)));
 
         if (currentBalance < price) {
             cm.sendMessageIdAsync(MessageBase.Level.ERROR, payer, "messages.ec-no-money", placeholders);
@@ -247,7 +247,7 @@ public class EnderChestService {
 
         balance.withdraw(payer, price);
 
-        PlayerDataCache pdc = YcoordCore.getInstance().getPlayerDataCache();
+        PlayerDataCache pdc = YcoordEnderChest.getInstance().getPlayerDataCache();
         String perm = String.format(permission, page, slot);
         pdc.add(offlinePlayer, perm, "true");
 
