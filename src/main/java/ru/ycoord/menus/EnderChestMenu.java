@@ -29,6 +29,7 @@ import ru.ycoord.examples.guis.ExampleGuiSlotData;
 import ru.ycoord.services.EnderChestService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class EnderChestMenu extends GuiPagedData {
@@ -191,7 +192,14 @@ public class EnderChestMenu extends GuiPagedData {
                 String descId = service.getDescId(currentPage, slot);
                 if (descId == null)
                     return lore;
+
                 lore.add(YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, descId, new MessagePlaceholders(ignored)));
+
+                if (service.canUnlockSlot(Objects.requireNonNull(ignored.getPlayer()))) {
+                    lore.add("");
+                    lore.add(YcoordCore.getInstance().getChatMessage().makeMessageId(MessageBase.Level.NONE, "messages.ec-can-unlock", new MessagePlaceholders(ignored)));
+                }
+
 
                 return lore;
             }
