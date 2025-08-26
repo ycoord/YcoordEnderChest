@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
@@ -25,7 +24,6 @@ import ru.ycoord.core.messages.ChatMessage;
 import ru.ycoord.core.messages.MessageBase;
 import ru.ycoord.core.messages.MessagePlaceholders;
 import ru.ycoord.core.transaction.TransactionManager;
-import ru.ycoord.examples.guis.ExampleGuiSlotData;
 import ru.ycoord.services.EnderChestService;
 
 import java.util.List;
