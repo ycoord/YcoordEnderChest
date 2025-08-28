@@ -13,6 +13,7 @@ import ru.ycoord.core.messages.ChatMessage;
 import ru.ycoord.core.messages.MessageBase;
 import ru.ycoord.core.messages.MessagePlaceholders;
 import ru.ycoord.core.persistance.PlayerDataCache;
+import ru.ycoord.events.SlotUnlockedEvent;
 import ru.ycoord.menus.EnderChestMenu;
 
 import java.util.List;
@@ -231,6 +232,9 @@ public class EnderChestService {
         PlayerDataCache pdc = YcoordEnderChest.getInstance().getPlayerDataCache();
         String perm = String.format(permission, page, slot);
         pdc.add(offlinePlayer, perm, "true");
+
+        SlotUnlockedEvent ev = new SlotUnlockedEvent(offlinePlayer, page, slot);
+        org.bukkit.Bukkit.getPluginManager().callEvent(ev);
     }
 
 
