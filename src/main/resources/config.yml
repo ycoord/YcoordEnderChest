@@ -5,21 +5,13 @@ blacklist:
   - dscc
 
 database:
-  #connection-string: "jdbc:sqlite:{path}\\players.db"
-  connection-string: "jdbc:postgresql://localhost/postgres?user=postgres&password=postgres"
+  connection-string: "jdbc:sqlite:{path}\\players.db"
+  #connection-string: "jdbc:postgresql://localhost/postgres?user=postgres&password=postgres"
 messages:
   ec-no-money:
-    - "Нет денег или предыдущий слот закрыт! Ваш баланс: %balance%, нужно еще %diff%"
+    - "Недостаточно денег ваш баланс: %balance%, нужно еще %diff%"
   slot-buy-success:
     - "Вы успешно приобрели слот %buy-slot% на странице %buy-page% за %buy-price%"
-  slot-description:
-    - "<слот>"
-  page-description:
-    - "<страница>"
-  get-command-description:
-    - "получить предмет игрока"
-  set-command-description:
-    - "установить предмет для игрока"
   item-set:
     - "Вы установили предмет в слот %slot% на странице %page% для игрока %player%"
   ec-no-item:
